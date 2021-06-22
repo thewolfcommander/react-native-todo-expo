@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -17,9 +18,18 @@ export default function App() {
   const [taskItems, setTaskItems] = useState([]);
 
   const handleAddTask = () => {
+    // TODO: HANDLE EMPTY TASKS
+    Keyboard.dismiss();
     setTaskItems([...taskItems, task]);
     setTask(null);
   };
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
+  };
+
   return (
     <View style={styles.container}>
       {/* Today's tasks */}
@@ -30,8 +40,12 @@ export default function App() {
 
         <View style={styles.items}>
           {/* This is where the tasks will go */}
-          {taskItems.map((item) => {
-            return <Task text={item} />;
+          {taskItems.map((item, index) => {
+            return (
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <Task text={item} />
+              </TouchableOpacity>
+            );
           })}
         </View>
       </View>
