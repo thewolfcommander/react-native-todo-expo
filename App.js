@@ -19,9 +19,13 @@ export default function App() {
 
   const handleAddTask = () => {
     // TODO: HANDLE EMPTY TASKS
-    Keyboard.dismiss();
-    setTaskItems([...taskItems, task]);
-    setTask(null);
+    if (task === null) {
+      alert("You are creating an empty task. Please write something in it.");
+    } else {
+      Keyboard.dismiss();
+      setTaskItems([...taskItems, task]);
+      setTask(null);
+    }
   };
 
   const completeTask = (index) => {
@@ -31,7 +35,11 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        Platform.OS === "ios" ? styles.iosContainer : styles.androidContainer
+      }
+    >
       {/* Today's tasks */}
       <View style={styles.tasksWrapper}>
         <View style={styles.titleContainer}>
@@ -72,13 +80,19 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  iosContainer: {
     flex: 1,
+    marginVertical: 40,
+    backgroundColor: "#d4d9d1",
+  },
+  androidContainer: {
+    flex: 1,
+    marginTop: 40,
     backgroundColor: "#d4d9d1",
   },
 
   tasksWrapper: {
-    paddingTop: 20,
+    paddingTop: 0,
   },
   titleContainer: {
     backgroundColor: "#ebeaed",
